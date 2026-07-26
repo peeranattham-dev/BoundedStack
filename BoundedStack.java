@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class BoundedStack {
-    private final List<String> Books;
+    private final List<String> books;
     private final int capacity;
    //AF(Books,capacity)
    //RI
@@ -27,7 +27,7 @@ public class BoundedStack {
      * @throws IllegalArgumentException ถ้า capacity <= 0
      */
     public BoundedStack(int capacity){
-        this.Books = new ArrayList<>();
+        this.books = new ArrayList<>();
         this.capacity = capacity;
     }
 
