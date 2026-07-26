@@ -9,9 +9,9 @@ import java.util.List;
  */
 
 public class BoundedStack {
-    private final List<String> elements;
+    private final List<String> Books;
     private final int capacity;
-   //AF(elements,capacity)
+   //AF(Books,capacity)
    //RI
    //-
    //-
@@ -20,23 +20,35 @@ public class BoundedStack {
    
     /**
      * 
-     * @param รับหนังสือไม่เกิน10เล่ม
-     * @return เมื่อรับหนังสือครบให้หยิบไปที่เล่มแรก
-     * @throws แจ้งเตือนเมื่อหนังสือมีค่า = Null
+     * @param ชั้นรับคืนหนังสือมีพื้นที่10เล่ม
+     * @return เมื่อชั้นหนังสือเต็ม return = -1
+     * @throws แจ้งเตือนเมื่อหนังสือมีค่า = -1
      */
     public BoundedStack(int capacity){
-        this.elements = new ArrayList<>();
+        this.Books = new ArrayList<>();
         this.capacity = capacity;
     }
 
     /**
      * 
-     * @param เพิ่มหนังสือเมืื่อมีค่าน้อยกว่า10
-     * @return 
+     * @param เพิ่มหนังสือเมื่อมีค่าน้อยกว่า10
+      
      * @throws แจ้งเตือนเมื่อหนังสือเต็ม
      */
-    public void push(String s){
+    public void push(String book){
 
+
+    }
+
+
+    /**
+     * 
+     * @param บรรณารักษ์หยิบหนังสือออกจากชั้นวางหนังสือ
+     * @return หนังสือถูกหยิบออก
+     * @throws แจ้งเตือนว่าหนังสือถูกหยิบซ้ำ
+     * 
+     */
+    public void pop(String book){
 
     }
 
