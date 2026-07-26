@@ -5,7 +5,9 @@ import java.util.List;
  * พีรณัฐ ทำสวน 6821601321
  * วัสมพล เครืออารีย์ 6821601437
  * 
- * BoundedStack is
+ * BoundedStack — ADT แทนชั้นรับคืนหนังสือของห้องสมุด
+ * 
+ * หนังสือจะถูกวางซ้อนกัน และหยิบออกจากด้านบนสุดก่อน
  * 
  */
 
@@ -23,7 +25,7 @@ public class BoundedStack {
     /**
      * สร้าง BoundedStack ที่มีความจุตามที่กำหนด
      * 
-     * @param capacity จำนวนหนังสือสูงสุดที่เก็บได้ 10 เล่ม
+     * @param capacity จำนวนหนังสือสูงสุดที่ stack เก็บได้
      * @throws IllegalArgumentException ถ้า capacity <= 0
      */
     public BoundedStack(int capacity){
@@ -31,27 +33,43 @@ public class BoundedStack {
         this.capacity = capacity;
     }
 
+
+
     /**
-     * ตรงนี้คือการเพิ่มหนังสือไว้บนสุดของชั้นรับคืน
-     * @param book ชื่อหนังสือที่ต้องการคืน
+     * เพิ่มหนังสือไว้บนสุดของชั้นรับคืนหนังสือ
+     * 
+     * @param book ชื่อหนังสือที่ต้องการจะคืน
      * @throws IllegalArgumentException ถ้า book เป็น null
-     * @throws IllegalStateException ถ้าชั้นรับคืนเต็ม
+     * @throws IllegalStateException ถ้า stack เต็ม
      */
     public void push(String book){
-
 
     }
 
 
+
     /**
-     * ตรงนี้คือการหยิบหนังสือบนสุดออกจากชั้นรับคืนหนังสือ
-     * @return หนังสือถูกหยิบออก
-     * @throws IllegalStateException ถ้าชั้นรับคืนว่าง
+     * หยิบหนังสือบนสุดออกจากชั้นรับคืนหนังสือ
+     * 
+     * @return หนังสือถูกหยิบออกจากด้านบนสุด
+     * @throws IllegalStateException ถ้า stack ว่าง
      * 
      */
     public String pop() {
         return null;
     }
+
+    
+    
+    /**
+    * เรียกดูหนังสือบนสุดของชั้นรับคืนหนังสือ
+    *
+    * @return หนังสือบนสุดของ Stack
+    * @throws IllegalStateException ถ้า stack ว่าง
+    */
+    public String peek() {
+        return null;
+}
     
     
     
