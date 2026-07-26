@@ -5,7 +5,8 @@ import java.util.List;
  * พีรณัฐ ทำสวน 6821601321
  * วัสมพล เครืออารีย์ 6821601437
  * 
- * BoundedStack is .....
+ * BoundedStack is
+ * 
  */
 
 public class BoundedStack {
@@ -13,16 +14,17 @@ public class BoundedStack {
     private final int capacity;
    //AF(Books,capacity)
    //RI
-   //-
-   //-
+   //
+   //
+   //
    
    
    
     /**
+     * สร้าง BoundedStack ที่มีความจุตามที่กำหนด
      * 
-     * @param ชั้นรับคืนหนังสือมีพื้นที่10เล่ม
-     * @return เมื่อชั้นหนังสือเต็ม return = -1
-     * @throws แจ้งเตือนเมื่อหนังสือมีค่า = -1
+     * @param capacity จำนวนหนังสือสูงสุดที่เก็บได้ 10 เล่ม
+     * @throws IllegalArgumentException ถ้า capacity <= 0
      */
     public BoundedStack(int capacity){
         this.Books = new ArrayList<>();
@@ -30,10 +32,10 @@ public class BoundedStack {
     }
 
     /**
-     * 
-     * @param เพิ่มหนังสือเมื่อมีค่าน้อยกว่า10
-      
-     * @throws แจ้งเตือนเมื่อหนังสือเต็ม
+     * ตรงนี้คือการเพิ่มหนังสือไว้บนสุดของชั้นรับคืน
+     * @param book ชื่อหนังสือที่ต้องการคืน
+     * @throws IllegalArgumentException ถ้า book เป็น null
+     * @throws IllegalStateException ถ้าชั้นรับคืนเต็ม
      */
     public void push(String book){
 
@@ -42,16 +44,15 @@ public class BoundedStack {
 
 
     /**
-     * 
-     * @param บรรณารักษ์หยิบหนังสือออกจากชั้นวางหนังสือ
+     * ตรงนี้คือการหยิบหนังสือบนสุดออกจากชั้นรับคืนหนังสือ
      * @return หนังสือถูกหยิบออก
-     * @throws แจ้งเตือนว่าหนังสือถูกหยิบซ้ำ
+     * @throws IllegalStateException ถ้าชั้นรับคืนว่าง
      * 
      */
-    public void pop(String book){
-
+    public String pop() {
+        return null;
     }
-
+    
     
     
 }
