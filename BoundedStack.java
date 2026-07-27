@@ -8,6 +8,7 @@ import java.util.List;
  * BoundedStack — ADT แทนชั้นรับคืนหนังสือของห้องสมุด
  * 
  * หนังสือจะถูกวางซ้อนกัน และหยิบออกจากด้านบนสุดก่อน
+ * (ใช้เป็นชั้นคืนหนังสือเพื่อให้เป็นภาพง่ายๆ)
  * 
  */
 
@@ -15,11 +16,20 @@ public class BoundedStack {
     public static final int MAX_BOOKS = 10;
     private final List<String> books;
     private final int capacity;
-    // AF(Books,capacity)
-    // RI
-    //
-    //
-    //
+    
+    
+    //Abstraction Function:
+    //AF(Books,capacity)  
+    //    สแตกของหนังสือ โดยเรียงจากล่างขึ้นบนตามตำแหน่ง 0, 1, ..., books.size()-1 ใน books                      
+    //    ซึ่ง books.get(books.size()-1) คือหนังสืออยู่บนสุด (จะถูกหยิบออกก่อนด้วย pop/peek)                   
+    //    และ capacity คือจำนวนหนังสือสูงสุดที่ชั้นรับคืนนี้เก็บได้
+    
+    //Representation Invariant:
+    //    -books != null
+    //    -capacity > 0 && capacity <= MAX_BOOKS
+    //    -books.size() <= capacity
+    //    -ทุก element ใน books ต้องไม่เป็น null
+    
 
     /**
      * สร้าง BoundedStack ที่มีความจุตามที่กำหนด
@@ -28,7 +38,8 @@ public class BoundedStack {
      * @throws IllegalArgumentException ถ้า capacity <= 0
      */
     public BoundedStack(int capacity) {
-        if(capacity <= 0 || capacity > MAX_BOOKS)throw new IllegalArgumentException();
+        if (capacity <= 0 || capacity > MAX_BOOKS)
+            throw new IllegalArgumentException();
         this.books = new ArrayList<>();
         this.capacity = capacity;
     }
@@ -58,8 +69,9 @@ public class BoundedStack {
      * 
      */
     public String pop() {
-        if(books.isEmpty())throw new IllegalStateException();
-        return books.remove(MAX_BOOKS - 1);
+        if (books.isEmpty())
+            throw new IllegalStateException();
+        return books.remove(books.size() - 1);
     }
 
     /**
@@ -69,8 +81,22 @@ public class BoundedStack {
      * @throws IllegalStateException ถ้า stack ว่าง
      */
     public String peek() {
-        if(books.isEmpty())throw new IllegalStateException();
-        return books.get(MAX_BOOKS - 1);
+        if (books.isEmpty())
+            throw new IllegalStateException();
+        return books.get(books.size() - 1);
     }
 
+    /**
+     * สร้าง BoundedStack ใหม่ที่มีหนังสือเหมือนกับ stack นี้
+     * 
+     * @return BoundedStack ใหม่ที่copyมาจากของ stack นี้
+     */
+    public BoundedStack copy() {
+        BoundedStack newStack = new BoundedStack(this.capacity);
+        for (int i = 0; i < books.size(); i++) {
+            newStack.books.add(books.get(i));
+        }
+        return newStack;
+
+    }
 }
