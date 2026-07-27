@@ -25,10 +25,20 @@ public class BoundedStack {
     //    และ capacity คือจำนวนหนังสือสูงสุดที่ชั้นรับคืนนี้เก็บได้
     
     //Representation Invariant:
-    //    -books != null
-    //    -capacity > 0 && capacity <= MAX_BOOKS
-    //    -books.size() <= capacity
+    //    -books ต้องไม่เป็นค่าว่าง
+    //    -capacity ต้องมากกว่า 0 และไม่เกิน MAX_BOOKS
+    //    -จำนวนหนังสือที่เก็บอยู่ใน books ต้องไม่เกิน capacity
     //    -ทุก element ใน books ต้องไม่เป็น null
+
+
+    private void checkRep(){
+        assert books != null;
+        assert capacity > 0 && capacity <= MAX_BOOKS : "capacity ต้องอยู่ในช่วง 1 ถึง " + MAX_BOOKS;
+        assert books.size() <= capacity;
+        for (String book : books){
+            assert book != null;
+        }
+    }
     
 
     /**
@@ -42,6 +52,7 @@ public class BoundedStack {
             throw new IllegalArgumentException();
         this.books = new ArrayList<>();
         this.capacity = capacity;
+        checkRep();
     }
 
     /**
@@ -59,6 +70,7 @@ public class BoundedStack {
             throw new IllegalStateException();
 
         books.add(book);
+        checkRep();
     }
 
     /**
@@ -71,7 +83,9 @@ public class BoundedStack {
     public String pop() {
         if (books.isEmpty())
             throw new IllegalStateException();
-        return books.remove(books.size() - 1);
+        String result = books.remove(books.size() - 1);
+        checkRep();
+        return result;  
     }
 
     /**
@@ -96,6 +110,7 @@ public class BoundedStack {
         for (int i = 0; i < books.size(); i++) {
             newStack.books.add(books.get(i));
         }
+        newStack.checkRep();
         return newStack;
 
     }
