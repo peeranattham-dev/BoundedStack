@@ -5,20 +5,27 @@
 public class TestBoundedStack {
     static int pass = 0, fail = 0;
 
-     static void check(String name, boolean ok) {
-        if (ok) { pass++; System.out.println("  [PASS] " + name); }
-        else    { fail++; System.out.println("  [FAIL] " + name); }
+    static void check(String name, boolean ok) {
+        if (ok) {
+            pass++;
+            System.out.println("  [PASS] " + name);
+        } else {
+            fail++;
+            System.out.println("  [FAIL] " + name);
+        }
     }
- 
+
     public static void main(String[] a) {
         boolean ea = false;
         assert ea = true;
-        if (!ea) System.out.println("** คำเตือน: assertion ปิดอยู่ รันด้วย  java -ea TestBoundedStack **");
+        if (!ea)
+            System.out.println("** คำเตือน: assertion ปิดอยู่ รันด้วย  java -ea TestBoundedStack **");
         System.out.println("== BoundedStack Test==\n");
 
+        // เพิ่มfuntion
         testCreators();
         testPush();
-
+        testPop();
 
         System.out.println("\n=== Summary ===");
         System.out.println("Pass: " + pass);
@@ -26,30 +33,29 @@ public class TestBoundedStack {
         System.out.println("Total: " + (pass + fail));
     }
 
-        private static void testCreators(){
-            System.out.println("-- Creators --");
-        
-        
+    private static void testCreators() {
+        System.out.println("-- Creators --");
+
         {
-            //เช็ค peek ตอน stack ว่าง
+            // เช็ค peek ตอน stack ว่าง
             BoundedStack sapce = new BoundedStack(3);
             boolean threw = false;
             try {
                 sapce.peek();
             } catch (IllegalStateException e) {
-                threw =true;
+                threw = true;
             }
             check("stack ว่างแล้ว peek ต้อง throw IllegalStateException", threw);
         }
         {
             // เช็คcapacity = -1
-            boolean threw  = false;
+            boolean threw = false;
             try {
                 new BoundedStack(-1);
             } catch (IllegalArgumentException e) {
                 threw = true;
             }
-           check("new(-1) ต้อง throw IllegalArgumentException", threw);
+            check("new(-1) ต้อง throw IllegalArgumentException", threw);
         }
         {
             // capacity ปกติ ต้องสร้างได้
@@ -77,8 +83,8 @@ public class TestBoundedStack {
             check("new(0) ต้อง throw IllegalArgumentException", threw);
         }
 
-
     }
+
     private static void testPush() {
         System.out.println("\n-- Push --");
 
@@ -99,7 +105,7 @@ public class TestBoundedStack {
             }
             check("push(null) ต้อง throw IllegalArgumentException", threw);
         }
-        {   
+        {
             // ถ้าใส่ค่าจนเต็ม MAX_BOOKS พอดีจะทำงานได้ปกติ
             BoundedStack s = new BoundedStack(2);
             s.push("A");
@@ -120,7 +126,45 @@ public class TestBoundedStack {
             check("push ตอน stack เต็มแล้ว ต้อง throw IllegalStateException", threw);
         }
     }
-}
 
-        
     
+    private static void testPop() {
+        System.out.println("\n-- Test POP --");
+        {   
+            // ถ้าstack ว่าง จะ throw IllegalStateException
+            BoundedStack s = new BoundedStack(3);
+        
+            boolean threw = false;
+            try {
+                s.pop();
+            } catch (IllegalStateException e) {
+                threw = true;
+            }
+            check("pop ตอนstack ว่างจะ throw IllegalStateException  ", threw);
+        }
+        {
+            //มี1เล่มต้องpopให้เล่มนั้น
+            BoundedStack s = new BoundedStack(3);
+            s.push("A");
+            check("pop หลัง push  1 เล่ม ได้ค่าตรง", s.pop().equals("A"));
+        }
+        {
+            //มีหลายเล่มต้องPOP ตามลำดับเข้าสุดท้ายออกก่อน Last in  Ftist  Out
+            BoundedStack s = new BoundedStack(3);
+            s.push("A");
+            s.push("B");
+            s.push("C");
+            boolean LIFO = s.pop().equals("C")&& s.pop().equals("B") && s.pop().equals("A");
+            check("pop เรียงลำดับ last in Frist out", LIFO);
+        }
+        {   
+            // pop ต้องเอาเล่มออกจริง ไม่ใช่แค่คืนค่าเฉยๆ (ต่างจาก peek)
+            BoundedStack s = new BoundedStack(3);
+            s.push("A");
+            s.push("B");
+            s.pop();
+            check("pop แล้วเล่มถูกเอาออกจริง เหลือแค่ A",s.peek().equals("A"));
+
+        }
+    }
+}
