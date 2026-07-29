@@ -30,7 +30,8 @@ public class BoundedStack {
     //    -จำนวนหนังสือที่เก็บอยู่ใน books ต้องไม่เกิน capacity
     //    -ทุก element ใน books ต้องไม่เป็น null
 
-
+        
+    //  ===== Checkrep =====
     private void checkRep(){
         assert books != null;
         assert capacity > 0 && capacity <= MAX_BOOKS : "capacity ต้องอยู่ในช่วง 1 ถึง " + MAX_BOOKS;
@@ -39,8 +40,9 @@ public class BoundedStack {
             assert book != null;
         }
     }
-    
 
+
+    //  ===== Creator =====
     /**
      * สร้าง BoundedStack ที่มีความจุตามที่กำหนด
      * 
@@ -55,6 +57,8 @@ public class BoundedStack {
         checkRep();
     }
 
+
+    //  ===== Mutators เพิ่มสมาชิก=====
     /**
      * เพิ่มหนังสือไว้บนสุดของชั้นรับคืนหนังสือ
      * 
@@ -73,6 +77,8 @@ public class BoundedStack {
         checkRep();
     }
 
+
+    //  ===== Mutators 2 ลบสมาชิกตัวบนสุด =====
     /**
      * หยิบหนังสือบนสุดออกจากชั้นรับคืนหนังสือ
      * 
@@ -88,6 +94,8 @@ public class BoundedStack {
         return result;  
     }
 
+
+    //  ===== Observers =====
     /**
      * เรียกดูหนังสือบนสุดของชั้นรับคืนหนังสือ
      *
@@ -100,6 +108,8 @@ public class BoundedStack {
         return books.get(books.size() - 1);
     }
 
+
+    //  ===== Producer =====
     /**
      * สร้าง BoundedStack ใหม่ที่มีหนังสือเหมือนกับ stack นี้
      * 
