@@ -26,6 +26,7 @@ public class TestBoundedStack {
         testCreators();
         testPush();
         testPop();
+        testPeek();
 
         System.out.println("\n=== Summary ===");
         System.out.println("Pass: " + pass);
@@ -127,13 +128,12 @@ public class TestBoundedStack {
         }
     }
 
-    
     private static void testPop() {
         System.out.println("\n-- Test POP --");
-        {   
+        {
             // ถ้าstack ว่าง จะ throw IllegalStateException
             BoundedStack s = new BoundedStack(3);
-        
+
             boolean threw = false;
             try {
                 s.pop();
@@ -143,28 +143,103 @@ public class TestBoundedStack {
             check("pop ตอนstack ว่างจะ throw IllegalStateException  ", threw);
         }
         {
-            //มี1เล่มต้องpopให้เล่มนั้น
+            // มี1เล่มต้องpopให้เล่มนั้น
             BoundedStack s = new BoundedStack(3);
             s.push("A");
             check("pop หลัง push  1 เล่ม ได้ค่าตรง", s.pop().equals("A"));
         }
         {
-            //มีหลายเล่มต้องPOP ตามลำดับเข้าสุดท้ายออกก่อน Last in  Ftist  Out
+            // มีหลายเล่มต้องPOP ตามลำดับเข้าสุดท้ายออกก่อน Last in Ftist Out
             BoundedStack s = new BoundedStack(3);
             s.push("A");
             s.push("B");
             s.push("C");
-            boolean LIFO = s.pop().equals("C")&& s.pop().equals("B") && s.pop().equals("A");
+            boolean LIFO = s.pop().equals("C") && s.pop().equals("B") && s.pop().equals("A");
             check("pop เรียงลำดับ last in Frist out", LIFO);
         }
-        {   
+        {
             // pop ต้องเอาเล่มออกจริง ไม่ใช่แค่คืนค่าเฉยๆ (ต่างจาก peek)
             BoundedStack s = new BoundedStack(3);
             s.push("A");
             s.push("B");
             s.pop();
-            check("pop แล้วเล่มถูกเอาออกจริง เหลือแค่ A",s.peek().equals("A"));
+            check("pop แล้วเล่มถูกเอาออกจริง เหลือแค่ A", s.peek().equals("A"));
 
         }
+        {
+            BoundedStack s = new BoundedStack(3);
+            s.push("A");
+            s.push("B");
+            s.pop();
+            s.pop();
+            boolean threw = false;
+            try {
+                s.pop();
+            } catch (IllegalStateException e) {
+                threw = true;
+            }
+            check("pop จนว่างแล้ว pop ซ้ำต้อง throw", threw);
+        }
+        {
+            // pop แล้วมีที่ว่าง -> push กลับเข้าไปได้อีกจนเต็ม capacity เดิม
+            BoundedStack s = new BoundedStack(2);
+            s.push("A");
+            s.push("B");
+            s.pop();
+            s.pop();
+
+            boolean PushAfterPop = true;
+            try {
+                s.push("c");
+            } catch (IllegalStateException e) {
+                PushAfterPop = false;
+            }
+            check("pop แล้วมีที่ว่างให้ push กลับเข้าไปได้", PushAfterPop);
+        }
     }
+
+    private static void testPeek() {
+         System.out.println("\n-- Test PEEK --");
+        
+         {
+         //stack ว่างให้throw
+         BoundedStack s = new BoundedStack(2);
+         boolean threw = false;
+         try {
+            s.peek();
+         } catch (IllegalStateException  e) {
+            threw = true;
+         }
+         check("peek stack ว่างต้อง throw IllegalStateException", threw);
+         }
+         //มี1เล่มต้องได้เล่มนั้น
+         {
+            BoundedStack s = new BoundedStack(2);
+            s.push("A");
+            check("peek หลัง push 1 เล่ม ได้ค่าตรง", s.peek().equals("A"));
+         }
+         //ต้อง peekได้เล่มบนสุดเท่านั้น(ล่าสุด)
+         {
+            BoundedStack s = new BoundedStack(3);
+            s.push("A");
+            s.push("B");
+            s.push("C");
+            check("peek ได้เล่มบนสุด (ล่าสุด)", s.peek().equals("C"));
+         }
+         //Pop จนว่างแล้ว Peek ต้อง throw อีกรอบ
+         {
+            BoundedStack s = new BoundedStack(2);
+            s.push("A");
+            s.pop();
+            boolean threw =  false;
+            try {
+                s.peek();
+            } catch (IllegalStateException  e) {
+                threw = true;
+            }
+            check("peek หลัง pop จนว่างต้อง throw อีกครั้ง", threw);
+         }
+         
+    }
+
 }
