@@ -27,6 +27,7 @@ public class TestBoundedStack {
         testPush();
         testPop();
         testPeek();
+        testcopy();
 
         System.out.println("\n=== Summary ===");
         System.out.println("Pass: " + pass);
@@ -199,47 +200,91 @@ public class TestBoundedStack {
     }
 
     private static void testPeek() {
-         System.out.println("\n-- Test PEEK --");
-        
-         {
-         //stack ว่างให้throw
-         BoundedStack s = new BoundedStack(2);
-         boolean threw = false;
-         try {
-            s.peek();
-         } catch (IllegalStateException  e) {
-            threw = true;
-         }
-         check("peek stack ว่างต้อง throw IllegalStateException", threw);
-         }
-         //มี1เล่มต้องได้เล่มนั้น
-         {
+        System.out.println("\n-- Test PEEK --");
+
+        {
+            // stack ว่างให้throw
+            BoundedStack s = new BoundedStack(2);
+            boolean threw = false;
+            try {
+                s.peek();
+            } catch (IllegalStateException e) {
+                threw = true;
+            }
+            check("peek stack ว่างต้อง throw IllegalStateException", threw);
+        }
+        {
+            // มี1เล่มต้องได้เล่มนั้น
             BoundedStack s = new BoundedStack(2);
             s.push("A");
             check("peek หลัง push 1 เล่ม ได้ค่าตรง", s.peek().equals("A"));
-         }
-         //ต้อง peekได้เล่มบนสุดเท่านั้น(ล่าสุด)
-         {
+        }
+        {
+            // ต้อง peekได้เล่มบนสุดเท่านั้น(ล่าสุด)
             BoundedStack s = new BoundedStack(3);
             s.push("A");
             s.push("B");
             s.push("C");
             check("peek ได้เล่มบนสุด (ล่าสุด)", s.peek().equals("C"));
-         }
-         //Pop จนว่างแล้ว Peek ต้อง throw อีกรอบ
-         {
+        }
+        {
+            // Pop จนว่างแล้ว Peek ต้อง throw อีกรอบ
             BoundedStack s = new BoundedStack(2);
             s.push("A");
             s.pop();
-            boolean threw =  false;
+            boolean threw = false;
             try {
                 s.peek();
-            } catch (IllegalStateException  e) {
+            } catch (IllegalStateException e) {
                 threw = true;
             }
             check("peek หลัง pop จนว่างต้อง throw อีกครั้ง", threw);
-         }
-         
+        }
+
+    }
+
+    private static void testcopy() {
+        System.out.println("\n-- Test COPY --");
+
+        {
+            // copy ต้องมีเนื้อหาเดียวกันกับต้นฉบับ
+            BoundedStack original = new BoundedStack(3);
+            original.push("A");
+            original.push("B");
+            BoundedStack copy = original.copy();
+            check("copy ได้ค่าตรงกับต้นฉบับ", copy.peek().equals(original.peek()));
+        }
+        {
+            // แก้ copy (push เพิ่ม) ต้องไม่กระทบต้นฉบับ
+            BoundedStack original = new BoundedStack(3);
+            original.push("A");
+            BoundedStack copy = original.copy();
+            copy.push("B");
+            check("แก้ copy แล้วต้นฉบับไม่เปลี่ยน", original.peek().equals("A"));
+        }
+        {
+            // แก้ต้นฉบับ (pop ออก) ต้องไม่กระทบ copy
+            BoundedStack original = new BoundedStack(3);
+            original.push("A");
+            original.push("B");
+            BoundedStack copy = original.copy();
+            original.pop();
+            check("แก้ต้นฉบับแล้ว copy ไม่เปลี่ยน", copy.peek().equals("B"));
+        }
+        {
+            // copy จาก stack ว่าง ต้องได้ stack ว่างเหมือนกัน (peek ต้อง throw ทั้งคู่)
+            BoundedStack original = new BoundedStack(3);
+            BoundedStack copy = original.copy();
+            boolean threw = false;
+            try {
+                copy.peek();
+            } catch (IllegalStateException e) {
+                threw = true;
+            }
+            check("copy จาก stack ว่าง ได้ stack ว่าง", threw);
+
+        }
+
     }
 
 }
